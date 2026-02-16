@@ -4,16 +4,18 @@ A modern, full-stack file sharing application with end-to-end encryption, role-b
 
 ## ✨ Features
 
-- **Secure File Sharing** - Encrypted file storage with download/share capabilities
-- **User Authentication** - JWT-based authentication with email verification
-- **Admin Dashboard** - Real-time audit logs, activity monitoring, and system analytics
+- **Secure File Sharing** - Encrypted file storage with download capabilities and time-limited share links
+- **User Authentication** - JWT-based authentication with secure password hashing
+- **Time-Limited Share Links** - Generate expiring share links for files without requiring recipient login
+- **Admin Dashboard** - Real-time audit logs with activity monitoring and statistics
 - **User Dashboard** - Personal file management with upload/download/delete actions
-- **Encryption** - Files encrypted at rest using industry-standard encryption
-- **Audit Logging** - Complete activity tracking with filtering and search
+- **Encryption** - Files encrypted at rest using AES-256-CBC encryption
+- **Audit Logging** - Complete activity tracking with filtering, search, and IP address logging
 - **Role-Based Access** - Admin and User roles with appropriate permissions
 - **Dark Mode** - Full dark mode support across the application
 - **Responsive Design** - Mobile-friendly interface using Tailwind CSS
-- **Search & Filter** - Server-side pagination and search across files and audit logs
+- **Search & Filter** - Client-side pagination and search across files and audit logs
+- **Landing Page** - Professional landing page with feature showcase
 
 ## 🛠 Tech Stack
 
@@ -123,8 +125,8 @@ zeroshare/
 └── frontend/                 # React application
     ├── src/
     │   ├── components/       # Reusable components
-    │   ├── pages/           # Page components
-    │   ├── auth/            # Auth guards
+    │   ├── pages/           # Page components (Landing, Login, Signup, Dashboards, NotFound)
+    │   ├── auth/            # Auth guards (ProtectedRoute, AdminRoute)
     │   ├── api/             # API client
     │   └── styles/          # Global styles
     └── vite.config.js       # Vite configuration
@@ -133,19 +135,19 @@ zeroshare/
 ## 🔐 API Endpoints
 
 ### Authentication
-- `POST /api/auth/signup` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/logout` - Logout user
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user (returns JWT token)
 
 ### Files
-- `POST /api/files/upload` - Upload file
-- `GET /api/files/list` - List user's files (paginated)
-- `GET /api/files/download/:id` - Download file
-- `DELETE /api/files/:id` - Delete file
+- `POST /api/files/upload` - Upload and encrypt file
+- `GET /api/files/list` - List user's files (admin sees all files)
+- `GET /api/files/download/:id` - Download and decrypt file (owner or admin only)
+- `GET /api/files/share/:id` - Generate time-limited share link
+- `GET /api/files/shared-download/:token` - Public download via share link (no auth required)
+- `DELETE /api/files/delete/:id` - Delete file (owner or admin only)
 
 ### Admin
-- `GET /api/admin/logs` - Get audit logs (paginated)
-- `GET /api/admin/stats` - Get system statistics
+- `GET /api/admin/logs` - Get audit logs with optional filters (action, userId, date range)
 
 ## 🔑 Default Credentials
 
@@ -159,6 +161,7 @@ To test admin features:
 - **Font**: Space Grotesk (primary)
 - **Animations**: Custom fade-up and float animations
 - **Spacing**: Tailwind's 4px base unit system
+- **Components**: Reusable modals, navbar, file upload/list, audit logs with live statistics
 
 ## 🌐 Deployment
 
